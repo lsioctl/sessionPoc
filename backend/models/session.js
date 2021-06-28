@@ -7,12 +7,15 @@
  * issues when scaling (like how id is unique)
  **/
 
- const db = require('../helper/db');
- const mongoose = db.get();
- const postSchema = new mongoose.Schema({
-     id: { type: String, default: "", trim: true, maxlength: 280 },
-     // not sur it is needed
-     createdAt: { type: Date, default: Date.now }
+// mongoose is already set up in app.js
+// and available here as some kind of singleton
+const mongoose = require('mongoose');
+
+const sessionSchema = new mongoose.Schema({
+  id: { type: String, default: "", maxlength: 280 },
+  // not sur it is needed
+  createdAt: { type: Date, default: Date.now }
  });
- 
- module.exports = mongoose.model('Post', postSchema);
+
+// Compile mode from schema and export it
+module.exports = mongoose.model('sessionModel', sessionSchema);
