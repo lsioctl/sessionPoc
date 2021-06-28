@@ -1,11 +1,5 @@
 
-// Session schema
-
-/**
- * Could use mongodb _id instead, but I don't like exposing
- * such private informations, and it could lead to other
- * issues when scaling (like how id is unique)
- **/
+// session schema
 
 // mongoose is already set up in app.js
 // and available here as some kind of singleton
@@ -13,7 +7,7 @@ const mongoose = require('mongoose');
 
 const sessionSchema = new mongoose.Schema({
   id: { type: String, default: "", maxlength: 280 },
-  // not sur it is needed
+  // not sure it is needed
   createdAt: { type: Date, default: Date.now }
  });
 

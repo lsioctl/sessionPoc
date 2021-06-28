@@ -5,7 +5,8 @@ const counterService = require('../services/counter');
 
 let counter = 0;
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', async function(req, res, next) {
+  await counterService.create();
   counter++;
   return res.status(200).json({counter});
 });
