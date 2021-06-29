@@ -1,7 +1,8 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
-const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')
 const logger = require('morgan');
 const cors = require('cors');
 
@@ -29,18 +30,28 @@ const mongooseOptions = {
 mongoose.connect(DATABASE_URL, mongooseOptions)
 .then(() => {
   // The `mongoose.connect()` promise resolves to mongoose instance
+  const mongoStore = MongoStore.create({
+    // reuse mongoose connection for session storage
+    client: mongoose.connection.getClient()
+  });
   console.log('Connected to MongoDB');
+  app.use(session({
+    secret: 'asgdsadgsdagasgsag',
+    resave: false,
+    saveUninitialized: true,
+    store: mongoStore
+  }));
   app.use(cors());
   app.use(logger('dev'));
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
-  app.use(cookieParser());
   app.use(express.static(path.join(__dirname, 'public')));
 
   app.use('/', indexRouter);
   app.use('/users', usersRouter);
   app.use('/counter', counterRouter);
-}).catch(() => {
+}).catch((e) => {
+  console.log(e);
   // The `mongoose.connect()` promise rejects if initial connection fails
   console.log('MongoDB connection failed');
 });
