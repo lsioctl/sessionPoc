@@ -40,9 +40,10 @@ mongoose.connect(DATABASE_URL, mongooseOptions)
   const BACKEND_PORT = process.env.BACKEND_PORT || 3000;
   const backend_url = `http://${BACKEND_ADDRESS}:${BACKEND_PORT}`;
   const FRONTEND_URL = process.env.FRONTEND_URL || '*';
+  const sessionSecret = process.env.SESSION_KEY;
 
   app.use(session({
-    secret: 'asgdsadgsdagasgsag',
+    secret: sessionSecret,
     resave: false,
     saveUninitialized: true,
     store: mongoStore

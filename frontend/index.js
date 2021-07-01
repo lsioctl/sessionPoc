@@ -13,8 +13,6 @@ async function fetchCounter() {
     credentials: 'include',
   });
   const jsonResponse = await response.json();
-  console.log(response);
-  console.log(jsonResponse);
   const counter = jsonResponse.counter;
   return counter;
 }
