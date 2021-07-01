@@ -3,12 +3,10 @@ const router = express.Router();
 
 const counterService = require('../services/counter');
 
-let counter = 0;
 /* GET home page. */
 router.get('/', async function(req, res, next) {
-  await counterService.create();
-  counter++;
-  return res.status(200).json({counter});
+  const count = await counterService.update(req.sessionID);
+  return res.status(200).json({counter: count});
 });
 
 module.exports = router;
