@@ -36,9 +36,10 @@ mongoose.connect(DATABASE_URL, mongooseOptions)
   });
   console.log('Connected to MongoDB');
 
-  const BACKEND_ADDRESS = process.env.BACKEND_ADDRESS;
-  const BACKEND_PORT = process.env.BACKEND_PORT;
+  const BACKEND_ADDRESS = process.env.BACKEND_ADDRESS || 'localhost';
+  const BACKEND_PORT = process.env.BACKEND_PORT || 3000;
   const backend_url = `http://${BACKEND_ADDRESS}:${BACKEND_PORT}`;
+  const FRONTEND_URL = process.env.FRONTEND_URL || '*';
 
   app.use(session({
     secret: 'asgdsadgsdagasgsag',
@@ -48,8 +49,15 @@ mongoose.connect(DATABASE_URL, mongooseOptions)
   }));
 
   app.use(cors({
-    origin: backend_url,
+    // Access-Control-Allow-Origin
+    // needed to fetch from a frontend
+    // regexp or function can also be used
+    origin: FRONTEND_URL,
+    // Access-Control-Allow-Credentials
+    // needed to send cookies from the frontend
+    credentials: true,
   }));
+
   app.use(logger('dev'));
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
@@ -70,4 +78,3 @@ mongoose.connect(DATABASE_URL, mongooseOptions)
   console.log('MongoDB connection failed');
 });
 
-module.exports = app;

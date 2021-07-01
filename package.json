@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "frontend": "parcel frontend/index.html",
-    "backend": "nodemon backend/bin/www",
+    "backend": "nodemon backend/server",
     "dev": "concurrently npm:frontend npm:backend"
   },
   "author": "",

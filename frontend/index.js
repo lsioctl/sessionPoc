@@ -7,7 +7,11 @@ function updateCounter(counter) {
 const website = 'http://localhost:3000/counter/';
 
 async function fetchCounter() {
-  const response = await fetch(website);
+  const response = await fetch(website, {
+    // needed to send cookies when backend on a separate
+    // site, as long as CORS allow-origin different from *
+    credentials: 'include',
+  });
   const jsonResponse = await response.json();
   console.log(response);
   console.log(jsonResponse);
@@ -22,4 +26,4 @@ async function poll() {
 }
 
 // poll the backend
-//(async () => { await poll() })();
+(async () => { await poll() })();
