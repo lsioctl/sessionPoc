@@ -35,13 +35,21 @@ mongoose.connect(DATABASE_URL, mongooseOptions)
     client: mongoose.connection.getClient()
   });
   console.log('Connected to MongoDB');
+
+  const BACKEND_ADDRESS = process.env.BACKEND_ADDRESS;
+  const BACKEND_PORT = process.env.BACKEND_PORT;
+  const backend_url = `http://${BACKEND_ADDRESS}:${BACKEND_PORT}`;
+
   app.use(session({
     secret: 'asgdsadgsdagasgsag',
     resave: false,
     saveUninitialized: true,
     store: mongoStore
   }));
-  app.use(cors());
+
+  app.use(cors({
+    origin: backend_url,
+  }));
   app.use(logger('dev'));
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
@@ -50,6 +58,12 @@ mongoose.connect(DATABASE_URL, mongooseOptions)
   app.use('/', indexRouter);
   app.use('/users', usersRouter);
   app.use('/counter', counterRouter);
+
+  app.listen(BACKEND_PORT, BACKEND_ADDRESS, () => {
+    console.log(`Example app listening at ${backend_url}`);
+  });
+
+  
 }).catch((e) => {
   console.log(e);
   // The `mongoose.connect()` promise rejects if initial connection fails

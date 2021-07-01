@@ -22,4 +22,4 @@ async function poll() {
 }
 
 // poll the backend
-(async () => { await poll() })();
+//(async () => { await poll() })();
